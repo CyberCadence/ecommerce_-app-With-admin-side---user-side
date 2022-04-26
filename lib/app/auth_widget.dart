@@ -8,23 +8,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class AuthWidget extends ConsumerWidget {
   final WidgetBuilder signinBuilder;
   final WidgetBuilder noSigninBuilder;
+  final WidgetBuilder adminSignedInBuider;
+    final adminEmail = "admin@admin.com";
+  AuthWidget({required this.noSigninBuilder, required this.signinBuilder,required this.adminSignedInBuider});
 
-  AuthWidget({required this.noSigninBuilder, required this.signinBuilder});
-
-@override
-
-Widget build (BuildContext context,WidgetRef ref){
-final authstateChanges=ref.watch(authStateChangesProvider);
-
-return  authstateChanges.when(data: (user)=>user!=null?signinBuilder(context):noSigninBuilder(context),
- error: (_,__)=>const Scaffold(body: Center(child: Text('Something went wrong ,try again'),
-),
-),
- loading: () {
-return  const Scaffold(body: Center(child: CircularProgressIndicator()),);
-});
-
-
-
-}
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authstateChanges = ref.watch(authStateChangesProvider);
+    const adminEmail = "admin@admin.com";
+    return authstateChanges.when(
+        data: (user) =>
+            user != null ? user.email== adminEmail?adminSignedInBuider(context):   signinBuilder(context) : noSigninBuilder(context),
+        error: (_, __) => const Scaffold(
+              body: Center(
+                child: Text('Something went wrong ,try again'),
+              ),
+            ),
+        loading: () {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        });
+  }
 }
