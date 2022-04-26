@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:ecomm/app/auth_widget.dart';
-import 'package:ecomm/app/pages/admin/AdminHomeapge.dart';
+import 'package:ecomm/app/pages/admin/AdminHomepage.dart';
 import 'package:ecomm/app/pages/authentications/signInPage.dart';
 import 'package:ecomm/app/providers.dart';
 import 'package:ecomm/firebase_options.dart';

@@ -1,3 +1,5 @@
+import 'package:ecomm/app/providers.dart';
+import 'package:ecomm/models/ProductModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,28 +29,39 @@ class _AdminAddProductPageState extends ConsumerState<AdminAddProductPage> {
             CustomInputFieldFb1(
                 inputController: titleTextEditingController,
                 hintText: 'Product Name',
-                labelText: "ProductName"),const Spacer(),
+                labelText: "ProductName"),
+            const Spacer(),
             CustomInputFieldFb1(
                 inputController: priceEditingController,
                 hintText: 'Price',
-                labelText: 'Price'),const Spacer(),
+                labelText: 'Price'),
+            const Spacer(),
             CustomInputFieldFb1(
                 inputController: descriptionEditingController,
                 hintText: ' description',
-                labelText: 'Product descrription')
-        ,ElevatedButton(onPressed: ()=>_addProduct(), child: (const Icon(Icons.add)))  ],
+                labelText: 'Product descrription'),
+            ElevatedButton(
+                onPressed: () => _addProduct(), child: (const Icon(Icons.add)))
+          ],
         ),
       ),
     );
   }
 
-_addProduct() {
-    
+  _addProduct() async {
+    final storage = ref.read(databaseProvider);
+
+    if (storage == null) {
+      return;
+    }
+    await storage.addProduct(Product(
+        description: descriptionEditingController.text,
+        imageUrl: 'image',
+        name: titleTextEditingController.text,
+        price: double.parse(priceEditingController.text)));
+    Navigator.pop(context);
   }
-
 }
-
-
 
 //Custom widget
 
@@ -111,5 +124,4 @@ class CustomInputFieldFb1 extends StatelessWidget {
       ),
     );
   }
-
 }
