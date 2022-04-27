@@ -7,16 +7,15 @@ class FireStoreServiceS {
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<void> addProduct(Product product) async {
-    final docid = firestore.collection('products').doc().id;
-    await firestore.collection('products').doc(docid).set(product.toMap(docid));
-
-    await firestore
-        .collection('products')
-        .add(product.toMap())
-        .then((value) => print(value))
-        .catchError((onError) => print('error'));
+ 
+Future<void> addProduct(
+    Product product,
+  ) async {
+    final docId = firestore.collection("products").doc().id;
+    await firestore.collection("products").doc(docId)
+    .set(product.toMap(docId));
   }
+
 
   Stream<List<Product>> getallProducts() {
     return firestore

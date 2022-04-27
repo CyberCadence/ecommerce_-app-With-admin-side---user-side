@@ -11,7 +11,7 @@ class Product {
       required this.name,
       required this.price});
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap(String id) {
     return {
       'id': id,
       'name': name,
