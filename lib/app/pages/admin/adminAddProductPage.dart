@@ -54,7 +54,7 @@ class _AdminAddProductPageState extends ConsumerState<AdminAddProductPage> {
     if (storage == null) {
       return;
     }
-    await storage.addProduct(Product(
+    await storage.addProduct(Product( 
         description: descriptionEditingController.text,
         imageUrl: 'image',
         name: titleTextEditingController.text,
