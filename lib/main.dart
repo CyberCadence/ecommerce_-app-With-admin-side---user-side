@@ -19,7 +19,8 @@ void main() async {
 class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(theme: ThemeData(colorScheme:ColorScheme.fromSeed(seedColor: Colors.orange,primary: Colors.orange)) ,
+    return MaterialApp(debugShowCheckedModeBanner: false,
+      theme: ThemeData(colorScheme:ColorScheme.fromSeed(seedColor: Colors.orange,primary: Colors.orange)) ,
       home: AuthWidget(adminSignedInBuider: (context) => AdminHome(),
         signinBuilder: (context) =>  Scaffold(body: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center,
         children: [

@@ -1,6 +1,7 @@
 import 'package:ecomm/app/pages/admin/adminAddProductPage.dart';
 import 'package:ecomm/app/providers.dart';
 import 'package:ecomm/models/ProductModel.dart';
+import 'package:ecomm/utilities/snackBar.dart';
 import 'package:ecomm/widgets/projectListTile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -28,27 +29,22 @@ class AdminHome extends ConsumerWidget {
             color: Colors.white,
           )),
       body: StreamBuilder<List<Product>>(
-
           stream: ref.read(databaseProvider)!.getallProducts(),
           builder: (context, snapshot) {
-           
             if (snapshot.connectionState == ConnectionState.active &&
                 snapshot.data != null) {
-
-
-if (snapshot.data!.isEmpty) {
+              if (snapshot.data!.isEmpty) {
                 return Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Text("No products yet..."),
-                      Lottie.asset("assets/animations/empty.json", 
+                      Lottie.asset("assets/animations/empty.json",
                           width: 200, repeat: false),
                     ],
                   ),
                 );
               }
-
 
               return ListView.builder(
                   itemCount: snapshot.data!.length,
@@ -58,6 +54,8 @@ if (snapshot.data!.isEmpty) {
                     return ProductListTile(
                         product: product,
                         onDelete: () async {
+                          openIconSnackBar(
+                              context, 'deleting item', const Icon(Icons.delete,color: Colors.white,));
                           await ref
                               .read(databaseProvider)!
                               .deleteItem(product.id!);

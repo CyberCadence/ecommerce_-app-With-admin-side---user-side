@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ecomm/app/providers.dart';
 import 'package:ecomm/models/ProductModel.dart';
+import 'package:ecomm/utilities/snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -87,28 +88,26 @@ class _AdminAddProductPageState extends ConsumerState<AdminAddProductPage> {
     final filestorage = ref.read(storageProvider);
     final imageFile = ref.read(addImageProvider.state).state;
 
-    if (storage == null || imageFile == null||filestorage==null) {
+    if (storage == null || imageFile == null || filestorage == null) {
       print("Error :Storage,filestoreage or imagefile is null");
       return;
     }
 
     final imageurl = await filestorage.uploadFile(imageFile.path);
-    
-    
-    
+
     await storage.addProduct(Product(
         description: descriptionEditingController.text,
         imageUrl: imageurl,
         name: titleTextEditingController.text,
         price: double.parse(priceEditingController.text)));
+
+    openIconSnackBar(context, 'Product added Sucessfully', Icon(Icons.check));
     Navigator.pop(context);
   }
 }
 
 // Create an image provider with riverpod
 final addImageProvider = StateProvider<XFile?>((_) => null);
-
-
 
 class CustomInputFieldFb1 extends StatelessWidget {
   final TextEditingController inputController;
