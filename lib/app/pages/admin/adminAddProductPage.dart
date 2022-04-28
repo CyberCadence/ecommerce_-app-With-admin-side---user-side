@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:ecomm/app/providers.dart';
 import 'package:ecomm/models/ProductModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AdminAddProductPage extends ConsumerStatefulWidget {
   AdminAddProductPage();
@@ -24,25 +27,56 @@ class _AdminAddProductPageState extends ConsumerState<AdminAddProductPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(25),
-        child: Column(
-          children: [
-            CustomInputFieldFb1(
-                inputController: titleTextEditingController,
-                hintText: 'Product Name',
-                labelText: "ProductName"),
-            const Spacer(),
-            CustomInputFieldFb1(
-                inputController: priceEditingController,
-                hintText: 'Price',
-                labelText: 'Price'),
-            const Spacer(),
-            CustomInputFieldFb1(
-                inputController: descriptionEditingController,
-                hintText: ' description',
-                labelText: 'Product descrription'),
-            ElevatedButton(
-                onPressed: () => _addProduct(), child: (const Icon(Icons.add)))
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              CustomInputFieldFb1(
+                  inputController: titleTextEditingController,
+                  hintText: 'Product Name',
+                  labelText: "ProductName"),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomInputFieldFb1(
+                  inputController: priceEditingController,
+                  hintText: 'Price',
+                  labelText: 'Price'),
+              const SizedBox(
+                height: 20,
+              ),
+              Consumer(
+                builder: (context, watch, child) {
+                  final image = ref.watch(addImageProvider);
+                  return image == null
+                      ? const Text('No image selected')
+                      : Image.file(
+                          File(image.path),
+                          height: 200,
+                        );
+                },
+              ),
+              ElevatedButton(
+                  onPressed: () async {
+                    final image = await ImagePicker()
+                        .pickImage(source: ImageSource.gallery);
+
+                    if (image != null) {
+                      ref.watch(addImageProvider.state).state = image;
+                    }
+                  },
+                  child: const Icon(Icons.image)),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomInputFieldFb1(
+                  inputController: descriptionEditingController,
+                  hintText: ' description',
+                  labelText: 'Product descrription'),
+              ElevatedButton(
+                  onPressed: () => _addProduct(),
+                  child: (const Icon(Icons.add)))
+            ],
+          ),
         ),
       ),
     );
@@ -50,20 +84,31 @@ class _AdminAddProductPageState extends ConsumerState<AdminAddProductPage> {
 
   _addProduct() async {
     final storage = ref.read(databaseProvider);
+    final filestorage = ref.read(storageProvider);
+    final imageFile = ref.read(addImageProvider.state).state;
 
-    if (storage == null) {
+    if (storage == null || imageFile == null||filestorage==null) {
+      print("Error :Storage,filestoreage or imagefile is null");
       return;
     }
-    await storage.addProduct(Product( 
+
+    final imageurl = await filestorage.uploadFile(imageFile.path);
+    
+    
+    
+    await storage.addProduct(Product(
         description: descriptionEditingController.text,
-        imageUrl: 'image',
+        imageUrl: imageurl,
         name: titleTextEditingController.text,
         price: double.parse(priceEditingController.text)));
     Navigator.pop(context);
   }
 }
 
-//Custom widget
+// Create an image provider with riverpod
+final addImageProvider = StateProvider<XFile?>((_) => null);
+
+
 
 class CustomInputFieldFb1 extends StatelessWidget {
   final TextEditingController inputController;
