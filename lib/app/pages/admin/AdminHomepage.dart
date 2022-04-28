@@ -5,6 +5,7 @@ import 'package:ecomm/widgets/projectListTile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 
 class AdminHome extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,10 +28,28 @@ class AdminHome extends ConsumerWidget {
             color: Colors.white,
           )),
       body: StreamBuilder<List<Product>>(
+
           stream: ref.read(databaseProvider)!.getallProducts(),
           builder: (context, snapshot) {
+           
             if (snapshot.connectionState == ConnectionState.active &&
                 snapshot.data != null) {
+
+
+if (snapshot.data!.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text("No products yet..."),
+                      Lottie.asset("assets/animations/empty.json", 
+                          width: 200, repeat: false),
+                    ],
+                  ),
+                );
+              }
+
+
               return ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
