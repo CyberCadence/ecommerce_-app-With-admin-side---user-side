@@ -1,6 +1,7 @@
 import 'package:ecomm/app/pages/admin/adminAddProductPage.dart';
 import 'package:ecomm/app/providers.dart';
 import 'package:ecomm/models/ProductModel.dart';
+import 'package:ecomm/widgets/projectListTile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,14 +36,13 @@ class AdminHome extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final product = snapshot.data![index];
 
-                    return ListTile(
-                      trailing: IconButton(icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          ref.read(databaseProvider)!.deleteItem(product.id!);
-                        },
-                      ),
-                      title: Text(product.name),
-                   leading: product.imageUrl!=""?Image.network(product.imageUrl,height: 300,):Container() );
+                    return ProductListTile(
+                        product: product,
+                        onDelete: () async {
+                          await ref
+                              .read(databaseProvider)!
+                              .deleteItem(product.id!);
+                        });
                   });
             }
             return const Center(
