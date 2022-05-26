@@ -16,8 +16,7 @@ void main() async {
   runApp(ProviderScope(child:  MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
-  @override
+class MyApp extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(debugShowCheckedModeBanner: false,
       theme: ThemeData(colorScheme:ColorScheme.fromSeed(seedColor: Colors.orange,primary: Colors.orange)) ,
