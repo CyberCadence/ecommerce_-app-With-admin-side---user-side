@@ -10,8 +10,8 @@ class UserTopBar extends StatelessWidget {
       children: [
         leadingIconButton,
         const Spacer(),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
-        IconButton(onPressed: () {}, icon: Icon(Icons.card_travel))
+        IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_bag_sharp))
       ],
     );
   }
