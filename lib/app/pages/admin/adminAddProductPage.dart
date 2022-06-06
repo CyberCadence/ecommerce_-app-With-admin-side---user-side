@@ -17,10 +17,10 @@ class AdminAddProductPage extends ConsumerStatefulWidget {
 }
 
 class _AdminAddProductPageState extends ConsumerState<AdminAddProductPage> {
-  @override
   final titleTextEditingController = TextEditingController();
   final priceEditingController = TextEditingController();
   final descriptionEditingController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -84,6 +84,7 @@ class _AdminAddProductPageState extends ConsumerState<AdminAddProductPage> {
   }
 
   _addProduct() async {
+    print('called');
     final storage = ref.read(databaseProvider);
     final filestorage = ref.read(storageProvider);
     final imageFile = ref.read(addImageProvider.state).state;
@@ -101,7 +102,8 @@ class _AdminAddProductPageState extends ConsumerState<AdminAddProductPage> {
         name: titleTextEditingController.text,
         price: double.parse(priceEditingController.text)));
 
-    openIconSnackBar(context, 'Product added Sucessfully', Icon(Icons.check));
+    openIconSnackBar(
+        context, 'Product added Sucessfully', const Icon(Icons.check));
     Navigator.pop(context);
   }
 }

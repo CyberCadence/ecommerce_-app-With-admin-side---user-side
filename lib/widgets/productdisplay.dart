@@ -2,7 +2,7 @@ import 'package:ecomm/app/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:ecomm/extensions/extensions.dart';
 import '../models/ProductModel.dart';
 
 class ProductsDisplay extends ConsumerWidget {
@@ -57,7 +57,7 @@ class ProductsDisplay extends ConsumerWidget {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              product.name,
+                              product.name.capitalize(),
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
