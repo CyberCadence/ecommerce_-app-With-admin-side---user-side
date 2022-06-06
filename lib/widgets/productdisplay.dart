@@ -1,3 +1,4 @@
+import 'package:ecomm/app/pages/products/productDetailspage.dart';
 import 'package:ecomm/app/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,11 +31,11 @@ class ProductsDisplay extends ConsumerWidget {
                     final product = snapshot.data![index];
                     return GestureDetector(
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) =>
-                        //             ProductDetail(product: product)));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                     ProductDetails(product: product)));
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10.0),
