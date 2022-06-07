@@ -1,3 +1,5 @@
+import 'package:ecomm/app/pages/user/user_bagpage.dart';
+import 'package:ecomm/app/providers.dart';
 import 'package:ecomm/models/ProductModel.dart';
 import 'package:ecomm/widgets/usertopbar.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +54,8 @@ class ProductDetails extends ConsumerWidget {
             const SizedBox(
               height: 15,
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
                   'Price',
@@ -69,32 +72,37 @@ class ProductDetails extends ConsumerWidget {
                       fontSize: 16),
                 )
               ],
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            GestureDetector(
+              onTap: () {
+                ref.read(bagProvider).addPRoduct(product);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const UserBagPage()));
+              },
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Center(
+                  child: Text(
+                    " Add to Bag",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  ),
+                ),
+              ),
             )
-          ,const SizedBox(height: 25,),
-
-GestureDetector(
-  onTap: () {
-
-  },
-  child: Container(
-    width: double.infinity,
-    height: 50,
-    decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.primary,
-      borderRadius: BorderRadius.circular(10),
-    ),
-    child: const Center(
-      child: Text(
-        " Add to Bag",
-        style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 18),
-      ),
-    ),
-  ),
-)
-],
+          ],
         ),
       ),
     ));
