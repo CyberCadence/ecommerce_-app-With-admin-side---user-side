@@ -15,7 +15,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // ignore: prefer_const_constructors
   runApp(ProviderScope(child:  MyApp()));
-}
+} 
 
 class MyApp extends ConsumerWidget{
   const MyApp({Key? key}) : super(key: key);
