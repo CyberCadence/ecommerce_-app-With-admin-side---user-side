@@ -1,4 +1,5 @@
 import 'package:ecomm/ViewModels/view_model.dart';
+import 'package:ecomm/services/PaymentServices.dart';
 import 'package:ecomm/services/StorageServices.dart';
 import 'package:ecomm/services/firestorreServices.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,4 +30,7 @@ final databaseProvider = Provider<FireStoreServiceS?>((ref) {
 });
 final bagProvider = ChangeNotifierProvider<BagViewModel>((ref) {
   return BagViewModel();
+});
+final paymentProvider = Provider<PaymentService>((ref) {
+  return PaymentService();
 });
