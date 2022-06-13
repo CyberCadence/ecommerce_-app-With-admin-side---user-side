@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecomm/models/ProductModel.dart';
 import 'package:ecomm/models/UserdataModel.dart';
+import 'package:ecomm/models/order.dart';
 
 class FireStoreServiceS {
   final String uid;
@@ -28,7 +29,7 @@ class FireStoreServiceS {
   Future<void> deleteItem(String id) async {
     await firestore.collection('products').doc(id).delete();
   }
-//functionalities for UID
+ 
   Future<void> addUSer(UserDataModel userDataModel) async {
     await firestore
         .collection('users')
@@ -40,4 +41,36 @@ class FireStoreServiceS {
     final doc = await firestore.collection('users').doc(uid).get();
     return doc.exists ? UserDataModel.fromMap(doc.data()!) : null;
   }
+
+Stream<List<Order>> getOrders() {
+    return firestore
+        .collection("users")
+        .doc(uid)
+        .collection("orders")
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) {
+              final d = doc.data();
+              return Order.fromMap(d);
+            }).toList());
+  }
+
+Future<void> saveOrder(String confirmationId, List<Product> products) async {
+   
+    // Save the order in the orders collection of the user
+    await firestore.collection("users").doc(uid).collection("orders").add({
+      'confirmationId': confirmationId,
+      'products': products.map((product) => products).toList(),
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+    // Save the order on an outer collection for the admin / user depending on your design decision.
+    // await firestore.collection("orders").doc(confirmationId).set({
+    //   'confirmationId': confirmationId,
+    //   'products': products.map((product) => product.toMap()).toList(),
+    //   'timestamp': FieldValue.serverTimestamp(),
+   
+    // });
+
+  }
+
+
 }

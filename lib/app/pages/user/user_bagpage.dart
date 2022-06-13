@@ -9,6 +9,9 @@ class UserBagPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final payment = ref.read(paymentProvider);
+    final user = ref.read(authStateChangesProvider);
+    final userBag = ref.read(bagProvider);
     final bagviewModel = ref.watch(bagProvider);
     return Scaffold(
       body: SafeArea(
@@ -53,7 +56,25 @@ class UserBagPage extends ConsumerWidget {
                   fontWeight: FontWeight.bold),
             ),
           ),
-          ElevatedButton(onPressed: () async {}, child: const Text('Checkout'))
+          ElevatedButton(
+              onPressed: () async {
+                final result = await payment.initPaymentSheet(
+                    user.value!, userBag.gettotalprice);
+
+                if (!result.isError) {
+                  ref
+                      .read(databaseProvider)!
+                      .saveOrder(result.payIntentId!, userBag.productsBag);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Payment completed ')));
+                  userBag.removeallProducts();
+                  Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(result.message)));
+                }
+              },
+              child: const Text('Checkout'))
         ]),
       )),
     );

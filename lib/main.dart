@@ -15,7 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Stripe.publishableKey = 'pk_test_51L83VXSCFOe57vGMDOEMyVlq7WXcOjozYZu3o2xh2zc0XNvkqBTFXFxetDGChOCT66LZsi1oTnNIkiRlvqVks44S00zBnzrwHK';
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: DevicePreview(enabled:true,builder:(context)=>MyApp())));
 }
 
 class MyApp extends ConsumerWidget {
