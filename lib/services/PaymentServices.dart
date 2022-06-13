@@ -29,7 +29,7 @@ class PaymentService {
       // 1. create payment intent on the server
       final response = await http.post(
           Uri.parse(
-              'YOUR_CLOUD_FUNCTION_URL'),
+              'https://us-central1-ecomerce123.cloudfunctions.net/stripePaymentIntentRequest'),
           body: {
             'email': user.email,
             'amount': (totalAmount * 100).toString(),
